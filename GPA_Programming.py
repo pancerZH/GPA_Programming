@@ -11,7 +11,8 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     goalGPA = []
     result = []
     hundredResult = []
-    for i in np.arange(GPA, 4.91, 0.01):
+    boundary = 4.91
+    for i in np.arange(GPA, boundary, 0.01):
         x = (totalCredit * i - totalPoint) / (5 - i)
         goalGPA.append(round(i, 2))
         result.append(round(x, 1))
@@ -23,6 +24,7 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     dfResult.to_csv('goalGPA.csv')
 
     plt.plot(goalGPA, result)
+    print('{}:\t{}\t{}'.format('目标GPA', '需要的优秀学分', '百分制'))
     for i in zip(goalGPA, result, hundredResult):
         print('{}:\t{}\t{}'.format(i[0], i[1], i[2]))
     plt.show()
