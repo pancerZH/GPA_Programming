@@ -3,6 +3,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import login_xuanke as xk
+import requests
 
 
 def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
@@ -11,8 +13,8 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     goalGPA = []
     result = []
     hundredResult = []
-    boundary = 4.75
-    for i in np.arange(GPA, boundary, 0.01):
+    boundary = 4.95
+    for i in np.arange(GPA+0.01, boundary, 0.01):
         x = (totalCredit * i - totalPoint) / (5 - i)
         goalGPA.append(round(i, 2))
         result.append(round(x, 1))
@@ -35,17 +37,29 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
 
 
 def main():
-    file = pd.read_csv('raw_GPA.csv')
-    df = pd.DataFrame(file)
+    s = requests.session()
+    header={'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8','Accept-Encoding': 'gzip, deflate, sdch',
+    'Accept-Language': 'zh-CN,zh;q=0.8', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'}
+    credits = []
+    points = []
+    username = input('Please enter your student ID: ')
+    password = input('Please enter your password:   ')
+    xk.login(header, s, username, password)
+    xk.get_score(header, s, credits, points)
+    data = {
+        'credits': credits,
+        'points': points
+    }
+    df = pd.DataFrame(data)
 
     totalCredit = float(df.sum(axis=0)[0])
     print('当前总学分 =', totalCredit)
-    totalPoint = df['credit'].mul(df['score']).sum(axis=0)
+    totalPoint = df['credits'].mul(df['points']).sum(axis=0)
     GPA = round(totalPoint / totalCredit, 2)
     print('当前总绩点 =', GPA)
 
     hundred = []
-    for i in df['score']:
+    for i in df['points']:
         if i == 5:
             hundred.append(95)
         elif i == 4:
@@ -56,7 +70,7 @@ def main():
             hundred.append(65)
         else:
             hundred.append(30)
-    totalHundredPoint = df['credit'].mul(hundred).sum(axis=0)
+    totalHundredPoint = df['credits'].mul(hundred).sum(axis=0)
     hundredPoint = round(totalHundredPoint / totalCredit, 1)
     print('当前百分制学分 =', hundredPoint)
 
