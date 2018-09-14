@@ -8,30 +8,14 @@
 
 Python3.6
 
-- numpy 1.14.2
+- numpy 1.13.3
 - pandas 0.20.3
 - matplotlib 2.0.2
+- beautifulsoup4 4.6.0
+- requests 2.18.4
 
-## 输入格式
+## 使用方法
 
-![image](./image/GPA_example.png)
+> python GPA_Programming.py
 
-CSV文件
-
-## 输出格式
-
-![image](./image/goalGPA_example.png)
-
-CSV文件
-
-## 修改目标GPA上限
-
-太懒了，所以手动改吧
-
-calGPA函数中
-
-```python
-    boundary = 4.91
-```
-
-修改4.91处即可
+之后根据提示输入学生ID和密码即可。计算完毕后，会在当前文件夹下得到一个`goal_GPA.csv`的文件，里面记录了由当前成绩到4.95所需要的绩点。
