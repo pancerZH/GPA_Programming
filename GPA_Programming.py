@@ -27,7 +27,7 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     dfResult = pd.DataFrame(rawData, columns=['Goal GPA', '"A" credits needed', 'GPA in 100'])
     dfResult.to_csv('goal_GPA.csv')
 
-    plt.plot(goalGPA, result)
+    plt.plot(result, goalGPA)
     best_gpa_in_one_year = (totalPoint + 20 * 2 * 5) / (totalCredit + 40)
     best_gpa_in_100 = (totalPoint + 20 * 2 * 5) / (totalCredit + 40) * 10 + 45
     print('若每学期获得20学分的优，预计一年后最好绩点是%.2f(百分制%.2f)。' % (best_gpa_in_one_year, best_gpa_in_100))
