@@ -13,22 +13,21 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     goalGPA = []
     result = []
     hundredResult = []
-    boundary = 4.95
-    for i in np.arange(GPA+0.01, boundary, 0.01):
-        x = (totalCredit * i - totalPoint) / (5 - i)
-        goalGPA.append(round(i, 2))
-        result.append(round(x, 1))
-        hundredPoint = round(((totalHundredPoint + x * 95) / (totalCredit + x)), 1)
-        hundredResult.append(hundredPoint)
+
+    for i in np.arange(0.5, 200.0, 0.5):
+        new_gpa = round((totalPoint + i * 5) / (totalCredit + i), 2)
+        if new_gpa not in goalGPA:
+            goalGPA.append(new_gpa)
+            result.append(i)
+            hundredPoint = round(((totalHundredPoint + i * 95) / (totalCredit + i)), 1)
+            hundredResult.append(hundredPoint)
+
 
     rawData = {'Goal GPA': goalGPA, '"A" credits needed': result, 'GPA in 100': hundredResult}
     dfResult = pd.DataFrame(rawData, columns=['Goal GPA', '"A" credits needed', 'GPA in 100'])
     dfResult.to_csv('goal_GPA.csv')
 
     plt.plot(goalGPA, result)
-    # print('{}:\t{}\t{}'.format('目标GPA', '需要的优秀学分', '百分制'))
-    # for i in zip(goalGPA, result, hundredResult):
-        # print('{}:\t{}\t{}'.format(i[0], i[1], i[2]))
     best_gpa_in_one_year = (totalPoint + 20 * 2 * 5) / (totalCredit + 40)
     best_gpa_in_100 = (totalPoint + 20 * 2 * 5) / (totalCredit + 40) * 10 + 45
     print('若每学期获得20学分的优，预计一年后最好绩点是%.2f(百分制%.2f)。' % (best_gpa_in_one_year, best_gpa_in_100))
