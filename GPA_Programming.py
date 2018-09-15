@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import login_xuanke as xk
 import requests
+import getpass
 
 
 def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
@@ -30,7 +31,7 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     plt.plot(result, goalGPA)
     best_gpa_in_one_year = (totalPoint + 20 * 2 * 5) / (totalCredit + 40)
     best_gpa_in_100 = (totalPoint + 20 * 2 * 5) / (totalCredit + 40) * 10 + 45
-    print('若每学期获得20学分的优，预计一年后最好绩点是%.2f(百分制%.2f)。' % (best_gpa_in_one_year, best_gpa_in_100))
+    print(u'若每学期获得20学分的优，预计一年后最好绩点是%.2f(百分制%.2f)。' % (best_gpa_in_one_year, best_gpa_in_100))
 
     plt.show()
 
@@ -42,7 +43,7 @@ def main():
     credits = []
     points = []
     username = input('Please enter your student ID: ')
-    password = input('Please enter your password:   ')
+    password = getpass.getpass('Please enter your password: ')
     xk.login(header, s, username, password)
     xk.get_score(header, s, credits, points)
     data = {
@@ -52,10 +53,10 @@ def main():
     df = pd.DataFrame(data)
 
     totalCredit = float(df.sum(axis=0)[0])
-    print('当前总学分 =', totalCredit)
+    print(u'当前总学分 =', totalCredit)
     totalPoint = df['credits'].mul(df['points']).sum(axis=0)
     GPA = round(totalPoint / totalCredit, 2)
-    print('当前总绩点 =', GPA)
+    print(u'当前总绩点 =', GPA)
 
     hundred = []
     for i in df['points']:
@@ -71,7 +72,7 @@ def main():
             hundred.append(30)
     totalHundredPoint = df['credits'].mul(hundred).sum(axis=0)
     hundredPoint = round(totalHundredPoint / totalCredit, 1)
-    print('当前百分制学分 =', hundredPoint)
+    print(u'当前百分制学分 =', hundredPoint)
 
     calGPA(GPA, totalCredit, totalPoint, totalHundredPoint)
 

@@ -1,6 +1,8 @@
+# -*- coding:utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 import re
+import getpass
 
 
 def login(header, s, username, password):
@@ -35,7 +37,7 @@ def login(header, s, username, password):
     message['SAMLResponse'] = soup.input['value']
     res = s.post(messURL, headers=header, data=message)
     res = s.get('http://xuanke.tongji.edu.cn/tj_login/index_main.jsp')
-    print('成功登陆！')
+    print(u'成功登陆！')
 
 
 def get_score(header, s, credits, points):
@@ -69,6 +71,5 @@ if __name__ == '__main__':
     credits = []
     points = []
     username = input('Please enter your student ID: ')
-    password = input('Please enter your password:   ')
-    login(header, s, username, password)
+    password = getpass.getpass('Please enter your password: ')
     get_score(header, s, credits, points)
