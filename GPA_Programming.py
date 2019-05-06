@@ -20,7 +20,7 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
         if new_gpa not in goalGPA:
             goalGPA.append(new_gpa)
             result.append(i)
-            hundredPoint = round(((totalHundredPoint + i * 95) / (totalCredit + i)), 1)
+            hundredPoint = round(((totalHundredPoint + i * 95) / (totalCredit + i)), 2)
             hundredResult.append(hundredPoint)
 
 
@@ -34,6 +34,25 @@ def calGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
     print(u'若每学期获得20学分的优，预计一年后最好绩点是%.2f(百分制%.2f)。' % (best_gpa_in_one_year, best_gpa_in_100))
 
     plt.show()
+
+
+def calRealGPA(GPA, totalCredit, totalPoint, totalHundredPoint):
+    print(GPA)
+    print(totalCredit)
+    print(totalPoint)
+    print(totalHundredPoint)
+
+    A = float(input('Please enter your A credits: '))
+    B = float(input('Please enter your B credits: '))
+    totalCredit = totalCredit + A + B
+    totalPoint = totalPoint + A * 5 + B * 4
+    GPA = totalPoint / (totalCredit * 5) * 5
+    totalHundredPoint = GPA * 10 + 45
+
+    print(GPA)
+    print(totalCredit)
+    print(totalPoint)
+    print(totalHundredPoint)
 
 
 def main():
@@ -74,7 +93,8 @@ def main():
     hundredPoint = round(totalHundredPoint / totalCredit, 1)
     print(u'当前百分制学分 =', hundredPoint)
 
-    calGPA(GPA, totalCredit, totalPoint, totalHundredPoint)
+    #calGPA(GPA, totalCredit, totalPoint, totalHundredPoint)
+    calRealGPA(GPA, totalCredit, totalPoint, totalHundredPoint)
 
 
 if __name__ == '__main__':
